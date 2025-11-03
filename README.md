@@ -58,8 +58,6 @@ optional **restore** mode enabled via a preprocessor flag.
 
 ```
 
-sql
-Copy code
 - When compiled with `ENABLE_RESTORE`, two additional methods must be implemented:
 - `restore_binary(const std::string&)` — reads from the binary file back into memory.  
 - `print_restored()` — prints all restored lines to `std::cout`.  
