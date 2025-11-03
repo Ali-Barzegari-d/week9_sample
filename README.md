@@ -14,7 +14,7 @@ You will implement four independent, autograded exercises that simulate real-wor
 This lab contains four graded exercises:
 
 - **Exercise 1 — BuildStats** – a modular library to collect and report build statistics (file I/O, formatting, preprocessor usage, RAII).  
-- **Exercise 2 — PluginLoader** – a runtime dynamic-loader for math plugins (shared libraries), demonstrating `extern "C"` exports, dlopen/dlsym usage, and ABI/version handling.
+- **Exercise 2 — Snapshot Serializer** – a template-based binary snapshot utility that saves and restores data from files, demonstrating file I/O, RAII, templates, and conditional compilation.
 - **Exercise 3 — Flexible Data Archiver** – Implement a modular library that converts text files into a compact binary format and optionally restores them using conditional compilation.
 - **Exercise 4 — Smart Translation Cache** – Develop a file-based translation cache that stores and retrieves string translations, supporting read-only and clear-on-start modes via preprocessor flags.
 
@@ -147,35 +147,36 @@ mplement the `BuildStats` class (declared in `build_stats.hpp`).
 
 ---
 
-## 6. Task D — PluginLoader
+## 6. Task D — Snapshot Serializer
 
-Design a **runtime plugin-based math system**.  
-The main program dynamically loads a shared library (`libmath.so` or `.dll`), retrieves function pointers,  
-and calls them at runtime.  
-This simulates real-world **C++ packaging**, **ABI stability**, and **versioning management**.
-
+You will design and implement a **template-based binary snapshot utility**  
+that can save and restore the state of objects to/from a binary file.  
+The exercise focuses on **file I/O**, **RAII**, **templates**, and **conditional compilation**.  
+Unlike previous template tasks, all implementation will be contained directly in the header file.
 
 ### Required Behavior
-- Implement a shared library (`mathlib`) with:
-  - `add`, `mul`, and `mean` functions (`extern "C"`).
-  - `version()` returning `"MathLib v1.0"`.
-  - `mean` returns `0.0` if size ≤ 0.
 
-- Implement `PluginLoader` that:
-  - Loads the library using `dlopen` and retrieves symbols via `dlsym`.
-  - Closes the handle in the destructor (RAII).
-  - Provides:
-    - `is_loaded()`
-    - `get_version()`
-    - `call_add`, `call_mul`, `call_mean`
-  - Throws `std::runtime_error` if a symbol is missing.
+- The class `Snapshot` accepts a file path in its constructor.  
+
+- `save(const std::vector<T>& data)`:
+  - Opens the file in binary mode (truncates existing content).  
+  - Writes the number of elements (`size_t`), then raw bytes of each element.  
+  - Throws `std::runtime_error` if the file cannot be opened.  
+
+- `load<T>()`:
+  - Opens the file in binary read mode.  
+  - Reads the element count and all stored values back into a `std::vector<T>`.  
+  - Returns the reconstructed vector.  
+
+- Uses **RAII** for automatic file management.  
+- If `SNAPSHOT_LOG` is defined, print debug logs on save/load.  
 
 ### Concepts Covered
-- Shared libraries vs static libraries
-- extern "C" linkage and name-mangling control
-- Dynamic symbol loading using dlopen and dlsym
-- ABI versioning and stable exported interfaces
-- Exception safety and RAII for external resources
+- Templates and generic programming  
+- File I/O (binary mode)  
+- RAII and exception safety  
+- Conditional compilation for debug logging  
+- Static library integration with CMake  
 
 ---
 
