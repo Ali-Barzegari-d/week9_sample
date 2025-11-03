@@ -1,4 +1,4 @@
-# CSI2372 — Week 8 Lab Handout
+# CSI2372 — Week 9 Lab Handout
 
 **Topic:** Exception Safety • RAII • Templates • Concepts • File I/O • Resource Management  
 **Course:** Advanced Programming Concepts with C++ (Fall 2025, uOttawa)
