@@ -4,6 +4,7 @@
 #include <sstream>
 #include <numeric>
 #include <filesystem>
+#include <algorithm>
 
 // TODO: constructor
 // - Store log file path.
